@@ -1,6 +1,7 @@
 "use client";
 
 import { useSelector, useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
 import { RootState } from "@/store";
 import { toggleProduct } from "@/store/signupSlice";
 import { Button } from "@/infrastructure/components/ui/button";
@@ -8,6 +9,7 @@ import { Button } from "@/infrastructure/components/ui/button";
 export default function AdditionalProducts() {
   const products = useSelector((s: RootState) => s.signup.products);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const available = [
     {
@@ -56,7 +58,7 @@ export default function AdditionalProducts() {
         </div>
 
         <div className="mt-6 flex justify-end">
-          <Button onClick={() => (window.location.href = "/setup-account")}>
+          <Button onClick={() => router.push("/setup-account")}>
             Continue
           </Button>
         </div>

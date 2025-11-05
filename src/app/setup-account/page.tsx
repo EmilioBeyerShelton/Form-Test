@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "@/store/signupSlice";
 import { Button } from "@/infrastructure/components/ui/button";
@@ -10,10 +11,12 @@ export default function SetupAccount() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const router = useRouter();
+
   function submit() {
     if (!email || !password) return alert("Please enter email and password");
     dispatch(setCredentials({ email, password }));
-    window.location.href = "/account-validation";
+    router.push("/account-validation");
   }
 
   return (

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setPersonalInfo } from "@/store/signupSlice";
 import { Button } from "@/infrastructure/components/ui/button";
@@ -11,10 +12,12 @@ export default function PersonalInformation() {
   const [dob, setDob] = useState("");
   const [ssn, setSsn] = useState("");
 
+  const router = useRouter();
+
   function submit() {
     if (!name || !dob || !ssn) return alert("Please fill all fields");
     dispatch(setPersonalInfo({ name, dob, ssn }));
-    window.location.href = "/review";
+    router.push("/review");
   }
 
   return (

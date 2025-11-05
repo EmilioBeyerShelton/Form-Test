@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setOTPVerified } from "@/store/signupSlice";
 import { Button } from "@/infrastructure/components/ui/button";
@@ -10,13 +11,15 @@ export default function AccountValidation() {
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const router = useRouter();
+
   function submit() {
     if (code !== "123456") return alert("Invalid code");
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
       dispatch(setOTPVerified(true));
-      window.location.href = "/personal-information";
+      router.push("/personal-information");
     }, 2000);
   }
 

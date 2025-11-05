@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
 import { RootState } from "@/store";
 import { setAccountType } from "@/store/signupSlice";
 import { Button } from "@/infrastructure/components/ui/button";
@@ -17,10 +17,11 @@ export default function Home() {
     setError(null);
   }
 
+  const router = useRouter();
+
   function continueNext() {
     if (!accountType) return setError("Please select an account to continue.");
-    // route to additional-products
-    window.location.href = "/additional-products";
+    router.push("/additional-products");
   }
 
   const personalFeatures = [
