@@ -5,45 +5,119 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "@/store/signupSlice";
 import { Button } from "@/infrastructure/components/ui/button";
+import {
+  Field,
+  FieldSet,
+  FieldGroup,
+  FieldLabel,
+  FieldError,
+} from "@/infrastructure/components/ui/field";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "@/infrastructure/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/infrastructure/components/ui/card";
+
+const setupSchema = z
+  .object({
+    email: z.email({ message: "Please enter a valid e-mail" }),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters" }),
+    confirmPassword: z.string(),
+  })
+  .refine((d) => d.password === d.confirmPassword, {
+    message: "Passwords must match",
+    path: ["confirmPassword"],
+  });
+
+type SetupForm = z.infer<typeof setupSchema>;
 
 export default function SetupAccount() {
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
 
-  function submit() {
-    if (!email || !password) return alert("Please enter email and password");
-    dispatch(setCredentials({ email, password }));
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<SetupForm>({
+    resolver: zodResolver(setupSchema),
+  });
+
+  async function onSubmit(data: SetupForm) {
+    dispatch(setCredentials({ email: data.email, password: data.password }));
     router.push("/account-validation");
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-50">
-      <main className="w-full max-w-lg bg-white p-8">
-        <h2 className="text-2xl font-semibold">Setup Account</h2>
-        <label className="block mt-4">
-          <div className="text-sm">E-Mail</div>
-          <input
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 w-full border rounded p-2"
-          />
-        </label>
-        <label className="block mt-4">
-          <div className="text-sm">Password</div>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 w-full border rounded p-2"
-          />
-        </label>
-        <div className="mt-6 flex justify-end">
-          <Button onClick={submit}>Continue</Button>
-        </div>
-      </main>
-    </div>
+    <main className="w-full h-screen flex justify-center items-center">
+      <Card className="w-full max-w-sm">
+        <CardHeader>
+          <CardTitle>Setup Account</CardTitle>
+          <CardDescription>
+            Enter your email and password below to setup your account
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <FieldSet>
+              <FieldGroup>
+                <Field>
+                  <FieldLabel>E-Mail</FieldLabel>
+                  <Input
+                    {...register("email")}
+                    aria-invalid={errors.email ? "true" : "false"}
+                  />
+                  <FieldError errors={[errors.email]} />
+                </Field>
+
+                <Field>
+                  <FieldLabel>Password</FieldLabel>
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      {...register("password")}
+                      aria-invalid={errors.password ? "true" : "false"}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((s) => !s)}
+                      className="absolute right-2 top-2 text-sm text-zinc-500"
+                    >
+                      {showPassword ? "Hide" : "Show"}
+                    </button>
+                  </div>
+                  <FieldError errors={[errors.password]} />
+                </Field>
+
+                <Field>
+                  <FieldLabel>Confirm password</FieldLabel>
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    {...register("confirmPassword")}
+                    aria-invalid={errors.confirmPassword ? "true" : "false"}
+                  />
+                  <FieldError errors={[errors.confirmPassword]} />
+                </Field>
+
+                <div className="mt-6 flex justify-end">
+                  <Button type="submit" disabled={isSubmitting}>
+                    Continue
+                  </Button>
+                </div>
+              </FieldGroup>
+            </FieldSet>
+          </form>
+        </CardContent>
+      </Card>
+    </main>
   );
 }
