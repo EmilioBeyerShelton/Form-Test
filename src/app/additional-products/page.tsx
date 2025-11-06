@@ -4,7 +4,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { RootState } from "@/store";
 import { toggleProduct } from "@/store/signupSlice";
+import { SquareCheck, Square } from "lucide-react";
 import { Button } from "@/infrastructure/components/ui/button";
+import {
+  Card,
+  CardAction,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/infrastructure/components/ui/card";
 
 export default function AdditionalProducts() {
   const products = useSelector((s: RootState) => s.signup.products);
@@ -22,42 +30,49 @@ export default function AdditionalProducts() {
       title: "Cashback Rewards",
       desc: "Earn cashback on qualifying purchases.",
     },
+    {
+      id: "money_market",
+      title: "Money Market",
+      desc: "Higher yields with flexible access.",
+    },
+    {
+      id: "high_yield_savings",
+      title: "High Yield Savings",
+      desc: "Grow your savings with competitive rates.",
+    },
   ];
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-50">
-      <main className="w-full max-w-3xl bg-white p-8">
+    <div className="flex min-h-screen justify-center">
+      <main className="flex w-full max-w-3xl flex-col items-center">
         <h2 className="text-2xl font-semibold">Additional Products</h2>
         <p className="text-muted-foreground">
           Add extras to your base account.
         </p>
 
-        <div className="mt-6 grid grid-cols-2 gap-4">
+        <div className="mt-6 grid w-full grid-cols-2 gap-4">
           {available.map((a) => {
             const active = products.includes(a.id);
             return (
-              <div
+              <Card
                 key={a.id}
-                className={`p-4 border rounded ${
-                  active ? "ring-2 ring-primary" : ""
-                }`}
+                onClick={() => dispatch(toggleProduct(a.id))}
+                className={`hover:cursor-pointer hover:drop-shadow-lg ${active ? "border border-black" : ""}`}
               >
-                <h4 className="font-medium">{a.title}</h4>
-                <p className="text-sm text-zinc-600">{a.desc}</p>
-                <div className="mt-3">
-                  <Button
-                    onClick={() => dispatch(toggleProduct(a.id))}
-                    variant={active ? "secondary" : "default"}
-                  >
-                    {active ? "Remove" : "Add"}
-                  </Button>
-                </div>
-              </div>
+                <CardHeader>
+                  <CardTitle>{a.title}</CardTitle>
+                  <CardDescription>{a.desc}</CardDescription>
+                  <CardAction>
+                    {active ? <SquareCheck /> : <Square />}
+                  </CardAction>
+                </CardHeader>
+              </Card>
             );
           })}
         </div>
 
-        <div className="mt-6 flex justify-end">
+        <div className="mt-6 flex w-full justify-between px-4">
+          <Button onClick={() => router.push("/")}>Back</Button>
           <Button onClick={() => router.push("/setup-account")}>
             Continue
           </Button>
