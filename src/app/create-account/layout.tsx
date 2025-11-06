@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import ReduxProvider from "@/providers/ReduxProvider";
 
 export const metadata: Metadata = {
   title: "The Next Banking App",
@@ -12,8 +12,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
+    <div className="min-h-screenitems-center flex justify-center px-6 py-20">
+      <ReduxProvider>{children}</ReduxProvider>
+    </div>
   );
 }
