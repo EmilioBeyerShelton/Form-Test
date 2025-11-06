@@ -16,13 +16,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/infrastructure/components/ui/input";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/infrastructure/components/ui/card";
+import { Card, CardContent } from "@/infrastructure/components/ui/card";
 
 const setupSchema = z
   .object({
@@ -54,18 +48,16 @@ export default function SetupAccount() {
 
   async function onSubmit(data: SetupForm) {
     dispatch(setCredentials({ email: data.email, password: data.password }));
-    router.push("/account-validation");
+    router.push("/create-account/account-validation");
   }
 
   return (
-    <main className="w-full h-screen flex justify-center items-center">
-      <Card className="w-full max-w-sm">
-        <CardHeader>
-          <CardTitle>Setup Account</CardTitle>
-          <CardDescription>
-            Enter your email and password below to setup your account
-          </CardDescription>
-        </CardHeader>
+    <main className="flex h-screen w-full flex-col items-center">
+      <h2 className="text-2xl font-semibold">Setup Account</h2>
+      <p className="text-muted-foreground">
+        Enter your email and password below to setup your account
+      </p>
+      <Card className="mt-6 w-full max-w-sm">
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <FieldSet>
@@ -90,7 +82,7 @@ export default function SetupAccount() {
                     <button
                       type="button"
                       onClick={() => setShowPassword((s) => !s)}
-                      className="absolute right-2 top-2 text-sm text-zinc-500"
+                      className="absolute top-2 right-2 text-sm text-zinc-500"
                     >
                       {showPassword ? "Hide" : "Show"}
                     </button>
