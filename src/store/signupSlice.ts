@@ -2,15 +2,26 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type AccountType = "personal" | "business" | null;
 
+export interface personalDate {
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  dateOfBirth: string;
+  street: string;
+  appartment: string;
+  city: string;
+  state: string;
+  zipcode: string;
+  phone: string;
+}
+
 export interface SignupState {
   accountType: AccountType;
   products: string[];
   email?: string;
   password?: string;
   otpVerified: boolean;
-  name?: string;
-  dob?: string; // ISO date
-  ssn?: string;
+  personalData: personalDate;
   submittedAt?: string; // ISO timestamp
 }
 
@@ -20,9 +31,18 @@ const initialState: SignupState = {
   email: undefined,
   password: undefined,
   otpVerified: false,
-  name: undefined,
-  dob: undefined,
-  ssn: undefined,
+  personalData: {
+    firstName: "",
+    middleName: "",
+    lastName: "",
+    dateOfBirth: "",
+    street: "",
+    appartment: "",
+    city: "",
+    state: "",
+    zipcode: "",
+    phone: "",
+  },
   submittedAt: undefined,
 };
 
@@ -43,7 +63,7 @@ const slice = createSlice({
     },
     setCredentials(
       state,
-      action: PayloadAction<{ email: string; password: string }>
+      action: PayloadAction<{ email: string; password: string }>,
     ) {
       state.email = action.payload.email;
       state.password = action.payload.password;
@@ -51,14 +71,17 @@ const slice = createSlice({
     setOTPVerified(state, action: PayloadAction<boolean>) {
       state.otpVerified = action.payload;
     },
-    setPersonalInfo(
-      state,
-      action: PayloadAction<{ name?: string; dob?: string; ssn?: string }>
-    ) {
-      const { name, dob, ssn } = action.payload;
-      if (name !== undefined) state.name = name;
-      if (dob !== undefined) state.dob = dob;
-      if (ssn !== undefined) state.ssn = ssn;
+    setPersonalInfo(state, action: PayloadAction<personalDate>) {
+      state.personalData.firstName = action.payload.firstName;
+      state.personalData.middleName = action.payload.middleName;
+      state.personalData.lastName = action.payload.lastName;
+      state.personalData.dateOfBirth = action.payload.dateOfBirth;
+      state.personalData.street = action.payload.street;
+      state.personalData.appartment = action.payload.appartment;
+      state.personalData.city = action.payload.city;
+      state.personalData.state = action.payload.state;
+      state.personalData.zipcode = action.payload.zipcode;
+      state.personalData.phone = action.payload.phone;
     },
     setSubmittedAt(state, action: PayloadAction<string | undefined>) {
       state.submittedAt = action.payload;
