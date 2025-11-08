@@ -22,7 +22,6 @@ export interface SignupState {
   password?: string;
   otpVerified: boolean;
   personalData: personalDate;
-  submittedAt?: string; // ISO timestamp
 }
 
 const initialState: SignupState = {
@@ -43,7 +42,6 @@ const initialState: SignupState = {
     zipcode: "",
     phone: "",
   },
-  submittedAt: undefined,
 };
 
 const slice = createSlice({
@@ -83,9 +81,6 @@ const slice = createSlice({
       state.personalData.zipcode = action.payload.zipcode;
       state.personalData.phone = action.payload.phone;
     },
-    setSubmittedAt(state, action: PayloadAction<string | undefined>) {
-      state.submittedAt = action.payload;
-    },
     hydrate(state, action: PayloadAction<Partial<SignupState>>) {
       return { ...state, ...action.payload };
     },
@@ -101,7 +96,6 @@ export const {
   setCredentials,
   setOTPVerified,
   setPersonalInfo,
-  setSubmittedAt,
   hydrate,
   reset,
 } = slice.actions;

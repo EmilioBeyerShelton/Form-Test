@@ -1,64 +1,136 @@
 "use client";
 
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "@/store";
-import { setSubmittedAt } from "@/store/signupSlice";
+import { Badge } from "@/infrastructure/components/ui/badge";
 import { Button } from "@/infrastructure/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/infrastructure/components/ui/card";
+import { RootState } from "@/store";
+import { BadgeCheck, BadgeX } from "lucide-react";
+import { ReactElement } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
+import { reset } from "@/store/signupSlice";
 
-export default function Review() {
-  const s = useSelector((st: RootState) => st.signup);
+export default function PersonalInformation() {
+  const signupData = useSelector((st: RootState) => st.signup);
+  const router = useRouter();
   const dispatch = useDispatch();
 
-  function submit() {
-    const now = new Date().toISOString();
-    dispatch(setSubmittedAt(now));
-    alert("Submitted — check the Submitted At timestamp");
-  }
+  const handleClick = () => {
+    dispatch(reset());
+    router.push("/create-account");
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-50">
-      <main className="w-full max-w-3xl bg-white p-8">
-        <h2 className="text-2xl font-semibold">Review Submitted Details</h2>
+    <main className="flex h-screen w-full flex-col items-center">
+      <h2 className="text-2xl font-semibold">Review your data</h2>
+      <p className="text-muted-foreground"></p>
 
-        <dl className="mt-6 grid grid-cols-2 gap-4">
+      <Card className="mt-6 w-full max-w-2xl">
+        <CardHeader>
+          <CardTitle>Account Information</CardTitle>
+        </CardHeader>
+        <CardContent>
           <div>
-            <dt className="font-medium">Account type</dt>
-            <dd className="text-zinc-700">{s.accountType ?? "—"}</dd>
+            <KeyValuePair
+              keyName="Account Type"
+              value={signupData.accountType?.toString()}
+            />
+            <KeyValuePair
+              keyName="Products"
+              value={
+                <div className="flex flex-wrap gap-2">
+                  {signupData.products.map((p) => (
+                    <Badge variant="secondary" key={p}>
+                      {p}
+                    </Badge>
+                  ))}
+                </div>
+              }
+            />
           </div>
+        </CardContent>
+      </Card>
+      <Card className="mt-6 w-full max-w-2xl">
+        <CardHeader>
+          <CardTitle>Personal Information</CardTitle>
+        </CardHeader>
+        <CardContent>
           <div>
-            <dt className="font-medium">Products</dt>
-            <dd className="text-zinc-700">{s.products.join(", ") || "—"}</dd>
+            <KeyValuePair
+              keyName="E-Mail"
+              value={
+                <div className="flex gap-4">
+                  {signupData.email}{" "}
+                  {signupData.otpVerified ? (
+                    <BadgeCheck color="green" />
+                  ) : (
+                    <BadgeX color="red" />
+                  )}
+                </div>
+              }
+            />
+            <KeyValuePair
+              keyName="First Name"
+              value={signupData.personalData.firstName}
+            />
+            <KeyValuePair
+              keyName="Last Name"
+              value={signupData.personalData.lastName}
+            />
+            <KeyValuePair
+              keyName="Phone"
+              value={signupData.personalData.phone}
+            />
+            <KeyValuePair
+              keyName="Date of Birth"
+              value={new Date(
+                signupData.personalData.dateOfBirth,
+              ).toLocaleDateString()}
+            />
           </div>
+          <p className="pt-2 underline">Address:</p>
           <div>
-            <dt className="font-medium">E-Mail</dt>
-            <dd className="text-zinc-700">{s.email ?? "—"}</dd>
+            <KeyValuePair
+              keyName="Street"
+              value={signupData.personalData.street}
+            />
+            <KeyValuePair keyName="City" value={signupData.personalData.city} />
+            <KeyValuePair
+              keyName="State"
+              value={signupData.personalData.state}
+            />
+            <KeyValuePair
+              keyName="Zip Code"
+              value={signupData.personalData.zipcode}
+            />
           </div>
-          <div>
-            <dt className="font-medium">OTP Verified</dt>
-            <dd className="text-zinc-700">{s.otpVerified ? "Yes" : "No"}</dd>
-          </div>
-          <div>
-            <dt className="font-medium">Full name</dt>
-            <dd className="text-zinc-700">{s.name ?? "—"}</dd>
-          </div>
-          <div>
-            <dt className="font-medium">Date of birth</dt>
-            <dd className="text-zinc-700">{s.dob ?? "—"}</dd>
-          </div>
-          <div>
-            <dt className="font-medium">SSN</dt>
-            <dd className="text-zinc-700">{s.ssn ?? "—"}</dd>
-          </div>
-          <div>
-            <dt className="font-medium">Submitted At</dt>
-            <dd className="text-zinc-700">{s.submittedAt ?? "—"}</dd>
-          </div>
-        </dl>
+        </CardContent>
+      </Card>
+      <div>
+        <Button className="mt-6" onClick={handleClick}>
+          Back to the Start
+        </Button>
+      </div>
+    </main>
+  );
+}
 
-        <div className="mt-6 flex justify-end">
-          <Button onClick={submit}>Submit</Button>
-        </div>
-      </main>
+function KeyValuePair({
+  keyName,
+  value,
+}: {
+  keyName: string;
+  value: string | undefined | ReactElement;
+}) {
+  return (
+    <div className="flex gap-6 border-b py-2 last:border-0">
+      <span className="basis-1/4 text-right font-medium">{keyName}:</span>
+      <span className="basis-3/4">{value}</span>
     </div>
   );
 }
