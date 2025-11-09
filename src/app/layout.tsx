@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ReduxProvider from "@/providers/ReduxProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -12,8 +13,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html>
+      <body>
+        <div className="min-h-screenitems-center flex justify-center px-6 py-20">
+          <ReduxProvider>{children}</ReduxProvider>
+        </div>
+      </body>
     </html>
   );
 }
