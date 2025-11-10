@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { RootState } from "@/store";
 import { setAccountType } from "@/store/signupSlice";
 import { Button } from "@/infrastructure/components/ui/button";
-import { CircleCheck } from "lucide-react";
 import {
   Card,
   CardAction,
@@ -15,7 +14,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/infrastructure/components/ui/card";
-import { Checkbox } from "@/infrastructure/components/ui/checkbox";
+import { Circle, CircleCheck } from "lucide-react";
 
 interface AccountTypes {
   type: "personal" | "business";
@@ -75,14 +74,33 @@ export default function Home() {
       </p>
 
       <div className="grid w-full grid-cols-2 gap-6">
-        {accountTypes.map((accountType) => (
-          <AccountTypeCard
-            key={accountType.type}
-            accountType={accountType}
-            onClick={() => select(accountType.type)}
-            isSelected={accountType.type === selectedAaccountType}
-          />
-        ))}
+        {accountTypes.map((accountType) => {
+          const active = accountType.type === selectedAaccountType;
+          return (
+            <Card
+              key={accountType.type}
+              onClick={() => select(accountType.type)}
+              className={`hover:cursor-pointer hover:drop-shadow-lg ${active ? "border border-black" : ""}`}
+            >
+              <CardHeader>
+                <CardTitle>{accountType.title}</CardTitle>
+                <CardDescription>{accountType.description}</CardDescription>
+                <CardAction>
+                  {active ? <CircleCheck /> : <Circle color="lightgray" />}
+                </CardAction>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-col gap-1">
+                  {accountType.features.map((f, index) => (
+                    <div key={index} className="flex gap-2">
+                      <CircleCheck /> {f}
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
 
       {error && <div className="text-destructive">{error}</div>}
@@ -93,39 +111,3 @@ export default function Home() {
     </main>
   );
 }
-
-const AccountTypeCard = ({
-  accountType,
-  onClick,
-  isSelected,
-}: {
-  accountType: AccountTypes;
-  onClick: () => void;
-  isSelected: boolean;
-}) => {
-  return (
-    <Card
-      className={`${isSelected ? "border-2 border-black" : ""}`}
-      onClick={() => onClick()}
-    >
-      <CardHeader>
-        <CardTitle>{accountType.title}</CardTitle>
-        <CardDescription>{accountType.description}</CardDescription>
-        <CardAction>
-          <Checkbox checked={isSelected} />
-        </CardAction>
-      </CardHeader>
-      <CardContent>
-        <ol className="flex flex-col gap-2">
-          {accountType.features.map((f, index) => (
-            <li key={index}>
-              <div className="flex gap-2">
-                <CircleCheck /> {f}
-              </div>
-            </li>
-          ))}
-        </ol>
-      </CardContent>
-    </Card>
-  );
-};
