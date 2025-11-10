@@ -15,6 +15,7 @@ import {
   CardTitle,
 } from "@/infrastructure/components/ui/card";
 import { Circle, CircleCheck } from "lucide-react";
+import { H1, H3, P } from "@/infrastructure/components/ui/typography";
 
 interface AccountTypes {
   type: "personal" | "business";
@@ -64,16 +65,16 @@ export default function Home() {
 
   return (
     <main className="flex max-w-3xl flex-col items-center gap-8 bg-white dark:bg-black">
-      <h1 className="text-5xl font-bold">Welcome to Atlas Bank</h1>
-      <p className="text-zinc-600">
+      <H1>Welcome to Atlas Bank</H1>
+      <P className="text-center text-zinc-600">
         Create an account to manage your money, get rewards, and access extra
         products.
-      </p>
-      <p className="text-xl font-bold">
+      </P>
+      <H3 className="text-center">
         Choose the type of account you would like to open:
-      </p>
+      </H3>
 
-      <div className="grid w-full grid-cols-2 gap-6">
+      <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
         {accountTypes.map((accountType) => {
           const active = accountType.type === selectedAaccountType;
           return (

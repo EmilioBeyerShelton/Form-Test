@@ -13,6 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/infrastructure/components/ui/card";
+import { H3, P } from "@/infrastructure/components/ui/typography";
 
 export default function AdditionalProducts() {
   const products = useSelector((s: RootState) => s.signup.products);
@@ -44,10 +45,10 @@ export default function AdditionalProducts() {
 
   return (
     <main className="flex w-full max-w-3xl flex-col items-center">
-      <h2 className="text-2xl font-semibold">Additional Products</h2>
-      <p className="text-muted-foreground">Add extras to your base account.</p>
+      <H3 className="">Additional Products</H3>
+      <P className="text-zinc-600">Add extras to your base account.</P>
 
-      <div className="mt-6 grid w-full grid-cols-2 gap-4">
+      <div className="mt-6 grid w-full grid-cols-1 gap-4 md:grid-cols-2">
         {available.map((a) => {
           const active = products.includes(a.id);
           return (
@@ -66,8 +67,7 @@ export default function AdditionalProducts() {
         })}
       </div>
 
-      <div className="mt-6 flex w-full justify-between px-4">
-        <Button onClick={() => router.push("/")}>Back</Button>
+      <div className="mt-6 flex w-full justify-center px-4">
         <Button onClick={() => router.push("/setup-account")}>Continue</Button>
       </div>
     </main>

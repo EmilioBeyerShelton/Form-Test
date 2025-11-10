@@ -14,8 +14,11 @@ export default function RootLayout({
 }>) {
   return (
     <html>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </head>
       <body>
-        <div className="min-h-screenitems-center flex justify-center px-6 py-20">
+        <div className="min-h-screenitems-center flex justify-center px-6 py-6 md:py-20">
           <ReduxProvider>{children}</ReduxProvider>
         </div>
       </body>

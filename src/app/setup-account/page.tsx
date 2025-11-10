@@ -17,6 +17,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/infrastructure/components/ui/input";
 import { Card, CardContent } from "@/infrastructure/components/ui/card";
+import { H3, P } from "@/infrastructure/components/ui/typography";
 
 const setupSchema = z
   .object({
@@ -53,10 +54,10 @@ export default function SetupAccount() {
 
   return (
     <main className="flex h-screen w-full flex-col items-center">
-      <h2 className="text-2xl font-semibold">Setup Account</h2>
-      <p className="text-muted-foreground">
+      <H3>Setup Account</H3>
+      <P className="text-zinc-600">
         Enter your email and password below to setup your account
-      </p>
+      </P>
       <Card className="mt-6 w-full max-w-sm">
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -100,7 +101,7 @@ export default function SetupAccount() {
                   <FieldError errors={[errors.confirmPassword]} />
                 </Field>
 
-                <div className="mt-6 flex justify-end">
+                <div className="mt-6 flex justify-center">
                   <Button type="submit" disabled={isSubmitting}>
                     Continue
                   </Button>

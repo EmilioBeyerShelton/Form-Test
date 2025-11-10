@@ -25,6 +25,7 @@ import {
 import { Spinner } from "@/infrastructure/components/ui/spinner";
 import { toast } from "sonner";
 import { Toaster } from "@/infrastructure/components/ui/sonner";
+import { H3, P } from "@/infrastructure/components/ui/typography";
 
 const FormSchema = z.object({
   pin: z.string().min(6, {
@@ -61,10 +62,11 @@ export default function AccountValidation() {
 
   return (
     <main className="flex h-screen w-full flex-col items-center">
-      <h2 className="text-2xl font-semibold">Account Validation</h2>
-      <p className="text-muted-foreground">
-        Enter the 6-digit code sent to your e-mail. (Use 123456)
-      </p>
+      <H3>Account Validation</H3>
+      <P className="text-center text-zinc-600">
+        Enter the 6-digit code sent to your e-mail. <br />
+        (Use 123456)
+      </P>
       <Card className="mt-6 w-full max-w-sm">
         <CardContent>
           <div className="flex w-full justify-center">

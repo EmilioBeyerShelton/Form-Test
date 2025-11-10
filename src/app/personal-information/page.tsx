@@ -17,6 +17,7 @@ import {
 import { Input } from "@/infrastructure/components/ui/input";
 import { DatePickerInput } from "@/infrastructure/components/ui/datePickerInput";
 import { RootState } from "@/store";
+import { H3, P } from "@/infrastructure/components/ui/typography";
 
 function isValidDate(date: Date | undefined) {
   if (!date) {
@@ -94,17 +95,17 @@ export default function PersonalInformation() {
 
   return (
     <main className="flex h-screen w-full flex-col items-center">
-      <h2 className="text-2xl font-semibold">Add Personal Information</h2>
-      <p className="text-muted-foreground">
+      <H3>Add Personal Information</H3>
+      <P className="text-center text-zinc-600">
         Please provide your personal information to proceed.
-      </p>
+      </P>
 
       <Card className="mt-6 w-full max-w-2xl">
         <CardContent>
           <form id="personal-information" onSubmit={form.handleSubmit(submit)}>
             <FieldGroup>
               <p className="font-semibold">Personal information</p>
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <Controller
                   name="firstName"
                   control={form.control}
@@ -206,7 +207,7 @@ export default function PersonalInformation() {
                   </Field>
                 )}
               />
-              <div className="grid grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                 <Controller
                   name="city"
                   control={form.control}

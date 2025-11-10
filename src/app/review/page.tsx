@@ -14,6 +14,7 @@ import { ReactElement } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { reset } from "@/store/signupSlice";
+import { H3 } from "@/infrastructure/components/ui/typography";
 
 export default function PersonalInformation() {
   const signupData = useSelector((st: RootState) => st.signup);
@@ -27,8 +28,7 @@ export default function PersonalInformation() {
 
   return (
     <main className="flex h-screen w-full flex-col items-center">
-      <h2 className="text-2xl font-semibold">Review your data</h2>
-      <p className="text-muted-foreground"></p>
+      <H3 className="text-2xl font-semibold">Review your data</H3>
 
       <Card className="mt-6 w-full max-w-2xl">
         <CardHeader>
