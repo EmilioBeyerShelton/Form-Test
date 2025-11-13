@@ -177,7 +177,7 @@ export default function PersonalInformation() {
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="phone">Phone number *</FieldLabel>
-                    <Input {...field} id="phone" />
+                    <Input {...field} id="phone" placeholder="1234567890" />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}
@@ -244,7 +244,7 @@ export default function PersonalInformation() {
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel htmlFor="zipcode">Zip code *</FieldLabel>
-                      <Input {...field} id="zipcode" />
+                      <Input {...field} id="zipcode" placeholder="12345" />
                       {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />
                       )}

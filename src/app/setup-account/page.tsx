@@ -22,9 +22,9 @@ import { H3, P } from "@/infrastructure/components/ui/typography";
 const setupSchema = z
   .object({
     email: z.email({ message: "Please enter a valid e-mail" }),
-    password: z
-      .string()
-      .min(8, { message: "Password must be at least 8 characters" }),
+    password: z.string().min(8, {
+      message: "Password must be at least 8 characters. 1234asdf should work",
+    }),
     confirmPassword: z.string(),
   })
   .refine((d) => d.password === d.confirmPassword, {
