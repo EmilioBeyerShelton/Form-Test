@@ -36,7 +36,7 @@ function getDate(dateStr: string) {
 
 export default function PersonalInformation() {
   const dispatch = useDispatch();
-  const personalDate = useSelector((st: RootState) => st.signup.personalData);
+  const signupData = useSelector((st: RootState) => st.signup);
 
   const formSchema = z.object({
     firstName: z.string().min(1, { message: "First Name is required" }),
@@ -74,22 +74,26 @@ export default function PersonalInformation() {
         phone: data.phone,
       }),
     );
+    if (signupData.accountType === "business") {
+      router.push("/add-users");
+      return;
+    }
     router.push("/review");
   }
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: personalDate.firstName,
-      middleName: personalDate.middleName,
-      lastName: personalDate.lastName,
-      dateOfBirth: getDate(personalDate.dateOfBirth),
-      street: personalDate.street,
-      appartment: personalDate.appartment,
-      city: personalDate.city,
-      state: personalDate.state,
-      zipcode: personalDate.zipcode,
-      phone: personalDate.phone,
+      firstName: signupData.personalData.firstName,
+      middleName: signupData.personalData.middleName,
+      lastName: signupData.personalData.lastName,
+      dateOfBirth: getDate(signupData.personalData.dateOfBirth),
+      street: signupData.personalData.street,
+      appartment: signupData.personalData.appartment,
+      city: signupData.personalData.city,
+      state: signupData.personalData.state,
+      zipcode: signupData.personalData.zipcode,
+      phone: signupData.personalData.phone,
     },
   });
 

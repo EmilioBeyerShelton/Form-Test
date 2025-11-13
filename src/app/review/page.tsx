@@ -15,6 +15,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { reset } from "@/store/signupSlice";
 import { H3 } from "@/infrastructure/components/ui/typography";
+import {
+  Item,
+  ItemContent,
+  ItemTitle,
+  ItemDescription,
+} from "@/infrastructure/components/ui/item";
 
 export default function PersonalInformation() {
   const signupData = useSelector((st: RootState) => st.signup);
@@ -27,10 +33,10 @@ export default function PersonalInformation() {
   };
 
   return (
-    <main className="flex h-screen w-full flex-col items-center">
+    <main className="flex h-screen w-full max-w-2xl flex-col items-center">
       <H3 className="text-2xl font-semibold">Review your data</H3>
 
-      <Card className="mt-6 w-full max-w-2xl">
+      <Card className="mt-6 w-full">
         <CardHeader>
           <CardTitle>Account Information</CardTitle>
         </CardHeader>
@@ -111,6 +117,29 @@ export default function PersonalInformation() {
           </div>
         </CardContent>
       </Card>
+      {signupData.businessUsers.length > 0 && (
+        <Card className="mt-4 w-full">
+          <CardHeader>
+            <CardTitle>Business Users</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-2">
+            {signupData.businessUsers.map((user, index) => {
+              return (
+                <Item key={index} variant="outline">
+                  <ItemContent>
+                    <ItemTitle>
+                      {user.firstName} {user.lastName}
+                    </ItemTitle>
+                    <ItemDescription>
+                      Email: {user.email} | SSN: {user.ssn}
+                    </ItemDescription>
+                  </ItemContent>
+                </Item>
+              );
+            })}
+          </CardContent>
+        </Card>
+      )}
       <div>
         <Button className="mt-6" onClick={handleClick}>
           Back to the Start
