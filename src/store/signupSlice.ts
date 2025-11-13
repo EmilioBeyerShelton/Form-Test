@@ -21,7 +21,15 @@ export interface SignupState {
   email?: string;
   password?: string;
   otpVerified: boolean;
+  businessUsers: BusinessUser[];
   personalData: personalDate;
+}
+
+export interface BusinessUser {
+  firstName: string;
+  lastName: string;
+  email: string;
+  ssn: number;
 }
 
 const initialState: SignupState = {
@@ -30,6 +38,7 @@ const initialState: SignupState = {
   email: undefined,
   password: undefined,
   otpVerified: false,
+  businessUsers: [],
   personalData: {
     firstName: "",
     middleName: "",
@@ -81,6 +90,9 @@ const slice = createSlice({
       state.personalData.zipcode = action.payload.zipcode;
       state.personalData.phone = action.payload.phone;
     },
+    setBusinessUsers(state, action: PayloadAction<BusinessUser[]>) {
+      state.businessUsers = action.payload;
+    },
     hydrate(state, action: PayloadAction<Partial<SignupState>>) {
       return { ...state, ...action.payload };
     },
@@ -96,6 +108,7 @@ export const {
   setCredentials,
   setOTPVerified,
   setPersonalInfo,
+  setBusinessUsers,
   hydrate,
   reset,
 } = slice.actions;
